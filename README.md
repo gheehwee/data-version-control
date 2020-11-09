@@ -4,18 +4,14 @@ Use this template to start new DVC workspaces/experiments.
 We are using Data Version Control (https://dvc.org) to:
 - track and version our datasets and models
 - share development server resources
-- create reproducibe machine learning experiments
+- create reproducible machine learning experiments
 
 
-To start a new experiment/workspace named "bacteria"
-```bash
-$ git clone https://github.com/gheehwee/data-version-control.git bacteria
-$ cd bacteria
-```
+To create a new DVC workspace/experiment, click on the top green button `"Use this template"` on the github url for this repository. Give the new repo a name and `git clone` a local copy:
 
 Folder structure:
 ```bash
-$ tree bacteria
+$ tree expt01
 bacteria
 ├── LICENSE
 ├── README.md
