@@ -1,8 +1,10 @@
 # Data Version Control Template
 
+References:
 - https://dvc.org/doc/use-cases/versioning-data-and-model-files/tutorial
 - https://realpython.com/python-data-version-control/
 - https://github.com/realpython/data-version-control
+- https://github.com/PeterFogh/dvc_dask_use_case
 
 Use this template to start new DVC workspaces/experiments.
 We are using Data Version Control (https://dvc.org) to:
