@@ -1,12 +1,13 @@
 # Data Version Control Template
 
-Using [DVC](https://dvc.org) to:
+Use this template to start new DVC workspaces/experiments.
+We are using Data Version Control (https://dvc.org) to:
 - track and version our datasets and models
-- share a development server/resource
+- share development server resources
 - create reproducibe machine learning experiments
 
 
-To start new experiment named "bacteria"
+To start a new experiment/workspace named "bacteria"
 ```bash
 $ git clone https://github.com/gheehwee/data-version-control.git bacteria
 $ cd bacteria
