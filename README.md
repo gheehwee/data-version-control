@@ -1,5 +1,9 @@
 # Data Version Control Template
 
+- https://dvc.org/doc/use-cases/versioning-data-and-model-files/tutorial
+- https://realpython.com/python-data-version-control/
+- https://github.com/realpython/data-version-control
+
 Use this template to start new DVC workspaces/experiments.
 We are using Data Version Control (https://dvc.org) to:
 - track and version our datasets and models
