@@ -1,0 +1,99 @@
+### .pre-commit-config.yaml
+# https://pre-commit.com/
+
+# pre-commit install
+# pre-commit --version
+# pre-commit run      # check only changed files
+# pre-commit run -a   # check all files tracked by git
+# pre-commit run -v   # verbose
+# pre-commit run identity -a  # run specific id (identity here) on all files
+# pre-commit clean    # clean ~/.cache
+# use identify-cli to check file types
+
+repos:
+  - repo: meta
+    hooks:
+      - name: bash scripts
+        id: identity
+        types: [shell]
+
+      - name: python scripts
+        id: identity
+        types: [python]
+
+      - name: jupyter notebooks
+        id: identity
+        types: [jupyter]
+
+  - repo: local
+    hooks:
+
+      # https://github.com/mvdan/sh
+      - name: shfmt
+        id: shfmt
+        entry: shfmt
+        additional_dependencies: [mvdan.cc/sh/v3/cmd/shfmt@v3.1.2]
+        args: [-w]
+        language: golang
+        types: [shell]
+
+      # https://github.com/koalaman/shellcheck
+      - name: shellcheck
+        id: shellcheck
+        entry: shellcheck
+        # Use -P SCRIPTDIR to force relative path search for SC1090/1091 sourcing
+        args: [-x, -P, SCRIPTDIR]
+        language: system
+        types: [shell]
+
+    # https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.3.0
+    hooks:
+      # Prevent large files from being committed, default=500kB.
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      # Check yaml syntax.
+      - id: check-yaml
+      # Force all line endings to be lf (unix), no windows crlf please.
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # https://github.com/PyCQA/isort
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.5.2
+    hooks:
+      - id: isort
+
+  # https://github.com/psf/black#version-control-integration
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+        language_version: python3
+
+  # [2020-10-28]
+  # Use jupytext to convert notebooks to py/md files for version control.
+  # If we version both ipynb and conversion together, consider configuring
+  # git diff to ignore the diffs on the .ipynb files.
+  # See https://github.com/mwouts/jupytext/issues/251
+  # See https://stackoverflow.com/questions/10415100/want-to-exclude-file-from-git-diff
+  # Run this to ignore ipynb during git diff:
+  # git diff -- . ':(exclude)*.ipynb'
+  # Save as git alias: git config --global alias.df 'git diff -- . ":(exclude)*.ipynb"'
+
+  # # Format notebooks
+  # # https://github.com/nbQA-dev/nbQA
+  # - repo: https://github.com/nbQA-dev/nbQA
+  #   rev: 0.3.5
+  #   hooks:
+  #     - id: nbqa-black
+  #     - id: nbqa-pyupgrade
+  #     - id: nbqa-isort
+  #     # - id: nbqa-isort
+  #     #   args: ['--nbqa-mutate']
+  #     # - id: nbqa-black
+  #     #   args: ['--nbqa-mutate']
+  #     # - id: nbqa-pyupgrade
+  #     #   args: ['--nbqa-mutate']
+

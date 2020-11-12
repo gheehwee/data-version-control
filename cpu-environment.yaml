@@ -1,0 +1,99 @@
+# bactrack/38c.yaml
+
+### CPU-only conda environment
+# https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
+# conda package specification
+# https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/pkg-specs.html
+
+### Changelog:
+
+# 2020-11-06
+# - pytorch package naming changed, https://pytorch.org/get-started/locally/
+
+#-------------------------------------------------------------------------------
+# - Anaconda distro https://www.anaconda.com/
+# - natsort https://github.com/SethMMorton/natsort
+
+## Large data and pipelines:
+# - Dask https://dask.org/
+# - Zarr for compressed, chunked N-dim arrays
+#   https://github.com/zarr-developers/zarr-python
+# - DVC for data version control https://dvc.org/
+# TODO: Compare with DVC with intake https://github.com/intake/intake
+# - Papermill for notebook parametrization https://github.com/nteract/papermill
+# - pyarrow https://arrow.apache.org/docs/python/install.html
+
+## Deep Learning:
+# - Pytorch https://pytorch.org/get-started/locally/
+# - Tensorflow https://www.tensorflow.org/install
+# - JAX # https://github.com/google/jax#installation
+# - Scikit-learn https://scikit-learn.org/stable/
+
+## Image processing
+# - pyvips https://github.com/libvips/pyvips
+# - scikit-image https://github.com/scikit-image/scikit-image
+# For Zeiss CZI image support
+# - czifile to extract czi metadata https://pypi.org/project/czifile/
+# - aicsimageio for lazy czi loading https://github.com/AllenCellModeling/aicsimageio
+# - aicspylibczi for normal loading https://github.com/AllenCellModeling/aicspylibczi
+
+## Code quality
+# - jupytext https://github.com/mwouts/jupytext
+#   See use cases: https://github.com/mwouts/jupytext/blob/master/docs/examples.md
+# - pytest https://github.com/pytest-dev/pytest
+# - black https://github.com/psf/black
+# - isort https://github.com/PyCQA/isort
+# - nbdime for notebook diff https://github.com/jupyter/nbdime
+
+# visualization
+# - altair https://github.com/altair-viz/altair
+
+## Pip issues:
+# New pip resolver --use-feature=2020-resolver
+# https://discuss.python.org/t/announcement-pip-20-2-release/4863/2
+
+#-------------------------------------------------------------------------------
+name: 38c
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - anaconda
+  - altair
+  - black
+  - blas=*=mkl
+  - dvc
+  - isort
+  - jedi>=0.17
+  - jupyterlab
+  - jupytext
+  - natsort
+  - nodejs
+  - papermill
+  - pip
+  - pre-commit
+  - pyarrow
+  - pyvips
+  - pytest
+  - pytorch
+  - scikit-image
+  - scikit-learn
+  - shellcheck
+  - torchvision
+  - torchaudio
+  - zarr
+  - pip:
+    - --use-feature=2020-resolver
+    - aicspylibczi
+    - aicsimageio
+    - czifile
+    - jax
+    - jaxlib
+    - tensorflow
+    - nb_black
+    - tfrecorder
+
+# https://github.com/dnanhkhoa/nb_black
+# https://github.com/google/tensorflow-recorder

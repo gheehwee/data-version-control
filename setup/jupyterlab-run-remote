@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euf -o pipefail
+
+### Run jupyterlab instance for remote access
+
+# Get network cidr to share jupyterlab over
+read -rp "Enter network cidr for jupyterlab remote access: " network
+if [[ -z $network ]]; then echo "ERROR ** empty network cidr!" >&2 && exit 1; fi
+
+# Get notebook working directory
+read -rp "Enter path of notebook working directory: " path
+if [[ -z $path ]]; then echo "ERROR ** empty path!" >&2 && exit 1; fi
+
+fullpath=''
+case "$(uname -v)" in
+*Darwin*) fullpath=$(grealpath "$path") ;;
+*Ubuntu*) fullpath=$(realpath "$path") ;;
+*) echo 'ERROR ** Not MacOS or Ubuntu!' ;;
+esac
+readonly fullpath
+
+# clean up on interrupt or exit
+function cleanup() {
+	# clean up settings
+	rm -f ~/.jupyter/jupyter_notebook_config.json
+
+	# close ufw port for jupyterlab
+	case "$OSTYPE" in
+	linux*) sudo ufw delete allow from "$network" to any port 8080 comment jupyterlab ;;
+	*) ;;
+	esac
+}
+trap cleanup INT EXIT
+
+# Check jupyter settings
+jupyter-lab path
+
+# Set jupyter password
+jupyter-notebook password
+
+# Open ufw firewall (ubuntu)
+case "$OSTYPE" in
+linux*) sudo ufw allow from "$network" to any port 8080 comment jupyterlab ;;
+*) ;;
+esac
+
+# Start jupyterlab for remote access (listening on all ports for zerotier network, for e.g.)
+jupyter-lab --notebook-dir="$fullpath" --port=8080 --ip="*" --no-browser
+
+# For localhost usage only
+# jupyter-lab --notebook-dir="$workdir" --port=8080
+
+# localhost http://localhost:8080
+
+# Jupyterlab URL prefix
+# https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#running-the-notebook-with-a-customized-url-prefix
+# https://jupyterlab.readthedocs.io/en/stable/user/urls.html
+
+# https://jupyter-notebook.readthedocs.io/en/stable/public_server.html
+# https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#notebook-server-security

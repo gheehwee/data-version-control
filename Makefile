@@ -51,3 +51,26 @@ printvars: ## Print all variables (sorted)
 # 2. for tasks with help info, start a new line: task: ## help info
 # These will be populated into the generated help message.
 # ------------------------------------------------------------------------------
+
+### bactrack -------------------------------------------------------------------
+.PHONY: 38c 38g precommit-setup
+
+# Create or update conda environments at root of workspace
+env-%: ~/miniconda/bin/mamba
+	# Creating/updating conda environment: $*
+	mamba env update -f $*.yaml
+
+38c: env-cpu-environment ## Create/Update CPU-only environment (38c)
+
+38g: env-gpu-environment ## Create/Update GPU-accelerated environment (38g)
+
+jupyterlab-extensions: ## Configure jupyterlab extensions in active env
+	# defaults to installing latest ipywidgets jupyterlab extension
+	# https://ipywidgets.readthedocs.io/en/latest/user_install.html
+	jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+jupyterlab: ## Start jupyterlab on private zerotier network (check active env 1st)
+	# To change working notework directory, run
+	# export NOTEBOOK=path/to/working/directory
+	# and run this task again.
+	{ echo "$(ZEROTIER_NETWORK)"; echo "$(WORKDIR)"; } | setup/jupyterlab-run-remote
